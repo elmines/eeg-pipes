@@ -34,7 +34,6 @@ const config = {
       }
     ]
   },
-  devtool: "eval",
   devServer: {
     compress: true,
     port: 9000
@@ -48,10 +47,12 @@ const exportLibrary = ({
   libraryTarget = "umd",
   filename = `${libraryFileName}.${libraryTarget}.js`,
   chunkFilename = `${libraryFileName}.[name].${libraryTarget}.js`,
-  externals = externalsList
+  externals = externalsList,
+  devtool   = "eval"
 } = {}) =>
   Object.assign({}, config, {
     externals,
+    devtool,
     output: {
       path: path.resolve(__dirname, "dist"),
       filename,
@@ -73,5 +74,11 @@ module.exports = [
     filename: "electron.js",
     libraryTarget: "commonjs2",
     externals: []
-  })
+  }),
+  exportLibrary({
+    filename: `${libraryFileName}.react.js`,
+    libraryTarget: "commonjs2",
+    devtool: false,
+    externals: []
+  }),
 ];
